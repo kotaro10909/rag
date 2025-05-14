@@ -31,7 +31,7 @@ def main():
     init_page()
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-2.0-flash-lite",
         temperature=0.0,
         max_retries=2,
     )
@@ -83,7 +83,7 @@ def main():
     st.markdown("""
         <div class="chat-box1">
             <h1>FRACTAL AI SEARCH</h1>
-            <p>このAIチャットアプリは、社内情報を検索するためのものです。（社内規約情報はダミーです。実際の企業情報とは関係がありません。）</p>
+            <p>このAIチャットアプリは、社内情報を検索するためのものです。（就業規則などの社内規約情報はダミーです。実際の企業情報とは一切関係ありません。）</p>
             <p>フラクタルシステムズ株式会社に関する質問以外にはお答えできません。</p>
             <a href="#">社内ポータルサイト</a>
         </div>
