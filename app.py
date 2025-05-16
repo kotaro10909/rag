@@ -11,7 +11,7 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 from langchain.prompts import PromptTemplate
-
+ALLOWED_USERS = ["kotaronakashina1212@gmail.com"]
 def app_login():
     # 未ログイン時の表示
     if not st.user.is_logged_in:
@@ -19,6 +19,11 @@ def app_login():
              st.cache_data.clear()
              st.login()
              st.rerun()
+    elif st.user.email not in ALLOWED_USERS:
+        st.error("このユーザーにはアクセス権限がありません。")
+        st.stop()
+        st.cache_data.clear()
+        st.rerun()
 def app_logout():
         if st.button("ログアウト"):
             st.logout()
