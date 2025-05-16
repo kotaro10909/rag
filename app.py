@@ -24,10 +24,9 @@ def user_check():
     allowed_emails = st.secrets["access"]["allowed_emails"]
     if st.user.email not in allowed_emails:
         st.error("このユーザーにはアクセス権限がありません。")
-        st.stop()
-        if st.button("Googleでログイン"):
+        if st.button("別のアカウントでログイン"):
+             st.logout()
              st.cache_data.clear()
-             st.login()
              st.rerun()
         
 def app_logout():
