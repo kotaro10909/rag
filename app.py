@@ -19,13 +19,13 @@ def app_login():
              st.cache_data.clear()
              st.login()
              st.rerun()
-    else:
-        allowed_emails = st.secrets["access"]["allowed_emails"]
-        if st.user.email not in allowed_emails:
-            st.error("このユーザーにはアクセス権限がありません。")
-            st.stop()
-        st.cache_data.clear()
-        st.rerun()
+            
+def user_check():
+    allowed_emails = st.secrets["access"]["allowed_emails"]
+    if st.user.email not in allowed_emails:
+        st.error("このユーザーにはアクセス権限がありません。")
+        st.stop()
+        
 def app_logout():
         if st.button("ログアウト"):
             st.logout()
@@ -48,6 +48,7 @@ def main():
   if not st.user.is_logged_in:
     app_login()
   else:
+    user_check()
     app_logout()
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
