@@ -55,6 +55,7 @@ def main():
   else:
     if user_check():
         return
+    app_logout()
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
     )
