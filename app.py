@@ -21,9 +21,19 @@ def init_page():
         page_title='FRACTAL AI SEARCH',
         page_icon='🧑‍💻',
     )
-
+def app_login():
+    # 未ログイン時の表示
+    if not st.experimental_user.is_logged_in:
+        st.title("ログインが必要です")
+        if st.button("Googleでログイン"):
+            st.login()   # secrets.tomlの[auth]設定（Google）を使用してOIDCログイン
+    # ログイン済み時の表示
+    else:
+        st.write(f"こんにちは、{st.experimental_user.name} さん！")
+        st.button("ログアウト", on_click=st.logout)
 
 def main():
+    app_login()
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
     )
