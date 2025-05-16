@@ -12,6 +12,19 @@ from langchain.prompts.chat import (
 )
 from langchain.prompts import PromptTemplate
 
+def app_login():
+    # 未ログイン時の表示
+    if not st.user.is_logged_in:
+        if st.button("Googleでログイン"):
+             st.cache_data.clear()
+             st.login()
+             st.rerun()
+def app_logout():
+        if st.button("ログアウト"):
+            st.logout()
+            st.cache_data.clear()
+            st.rerun()
+
 def load_db(embeddings):
     return FAISS.load_local('faiss_store', embeddings, allow_dangerous_deserialization=True)
 
@@ -21,25 +34,18 @@ def init_page():
         page_title='FRACTAL AI SEARCH',
         page_icon='🧑‍💻',
     )
-def app_login():
-    # 未ログイン時の表示
-    if not st.experimental_user.is_logged_in:
-        st.title("ログインが必要です")
-        if st.button("Googleでログイン"):
-            st.login()   # secrets.tomlの[auth]設定（Google）を使用してOIDCログイン
-    # ログイン済み時の表示
-    else:
-        st.write(f"こんにちは、{st.experimental_user.name} さん！")
-        st.button("ログアウト", on_click=st.logout)
+
 
 def main():
+  init_page()
+  if not st.user.is_logged_in:
     app_login()
+  else:
+    app_logout()
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
     )
     db = load_db(embeddings)
-    init_page()
-
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.0-flash-lite",
         temperature=0.0,
@@ -93,7 +99,7 @@ def main():
     st.markdown("""
         <div class="chat-box1">
             <h1>FRACTAL AI SEARCH</h1>
-            <p>このAIチャットアプリは、社内情報を検索するためのものです。（就業規則などの社内規約情報はダミーです。実際の企業情報とは一切関係ありません。）</p>
+            <p>このAIチャットアプリは、社内情報を検索するためのものです。</p>
             <p>フラクタルシステムズ株式会社に関する質問以外にはお答えできません。</p>
             <a href="#">社内ポータルサイト</a>
         </div>
