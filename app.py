@@ -19,9 +19,11 @@ def app_login():
              st.cache_data.clear()
              st.login()
              st.rerun()
-    elif st.user.email not in ALLOWED_USERS:
-        st.error("このユーザーにはアクセス権限がありません。")
-        st.stop()
+    else:
+        allowed_emails = st.secrets["access"]["allowed_emails"]
+        if st.user.email not in allowed_emails:
+            st.error("このユーザーにはアクセス権限がありません。")
+            st.stop()
         st.cache_data.clear()
         st.rerun()
 def app_logout():
