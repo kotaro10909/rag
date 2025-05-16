@@ -88,6 +88,9 @@ def main():
             background-color: none;
             margin-bottom: 20px;
             text-align: center;
+            background-color = #f5f5f5;
+            font: monospace;
+            color: #333333;
         }
         .chat-box1 h1{
             color: #00536D;
