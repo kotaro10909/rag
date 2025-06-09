@@ -1,3 +1,4 @@
+%%writefile app.py
 from langchain.chains import RetrievalQA
 from langchain.schema import (SystemMessage, HumanMessage, AIMessage)
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
@@ -19,7 +20,7 @@ def app_login():
              st.cache_data.clear()
              st.login()
              st.rerun()
-            
+
 def user_check():
     allowed_emails = st.secrets["access"]["allowed_emails"]
     if st.user.email not in allowed_emails:
@@ -30,7 +31,7 @@ def user_check():
              st.rerun()
         return True
     return False
-        
+
 def app_logout():
         if st.button("ログアウト"):
             st.logout()
@@ -49,13 +50,13 @@ def init_page():
 
 
 def main():
-  init_page()
-  if not st.user.is_logged_in:
-    app_login()
-  else:
-    if user_check():
-        return
-    app_logout()
+    init_page()
+  # if not st.user.is_logged_in:
+  #   app_login()
+  # else:
+  #   if user_check():
+  #       return
+  #   app_logout()
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001"
     )
@@ -66,19 +67,28 @@ def main():
         max_retries=2,
     )
 
-    # オリジナルのSystem Instructionを定義する
-    prompt_template = """
-    あなたは、「フラクタルシステムズ」という団体専用のチャットボットです。
-    背景情報を参考に、質問に対して団体の人間になりきって、質問に回答してくだい。
+    オリジナルのSystem Instructionを定義する
 
-    フラクタルシステムズに全く関係のない質問と思われる質問に関しては、「フラクタルシステムズに関係することについて聞いてください」と答えてください。
-    フラクタルシステムズと関係のある質問には答えてください。
-    以下の背景情報を参照してください。情報がなければ、その内容については言及しないでください。
+    prompt_template = """
+    あなたは、「北辰物産」という団体専用のチャットボットです。
+    背景情報を参考に、質問に対して団体の人間になりきって、質問に回答してくだい。解答の最後で、参照したURLが分かればそれを答えてください。
+    以下の背景情報を参照してください。背景情報と関係のある質問には答えてください。
+    情報がなければ、その内容については言及しないでください。
     # 背景情報
     {context}
 
     # 質問
     {question}"""
+    # prompt_template = """
+    # あなたは、「フラクタル建築」という団体専用のチャットボットです。
+    # 背景情報を参考に、質問に対して団体の人間になりきって、質問に回答してくだい。回答情報と対応するCSVのカラムの情報も加えてください。
+    # 以下の背景情報を参照してください。背景情報と関係のある質問には答えてください。
+    # 情報がなければ、その内容については言及しないでください。
+    # # 背景情報
+    # {context}
+
+    # # 質問
+    # {question}"""
     PROMPT = PromptTemplate(
         template=prompt_template, input_variables=["context", "question"]
     )
@@ -117,7 +127,7 @@ def main():
         <div class="chat-box1">
             <h1>FRACTAL AI SEARCH</h1>
             <p>このAIチャットアプリは、社内情報を検索するためのものです。</p>
-            <p>フラクタルシステムズ株式会社に関する質問以外にはお答えできません。</p>
+            <p>フラクタル建築に関する質問以外にはお答えできません。（実際の企業名や社内情報は入っていません。）</p>
             <a href="#">社内ポータルサイト</a>
         </div>
     """, unsafe_allow_html=True)
