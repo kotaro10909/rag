@@ -1,4 +1,3 @@
-%%writefile app.py
 from langchain.chains import RetrievalQA
 from langchain.schema import (SystemMessage, HumanMessage, AIMessage)
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
